@@ -11,22 +11,19 @@ export interface TopPageHandler {
 }
 
 const mapStateToProps = (appState: AppState) => {
-    return {...appState.state, 
+    return {
+        ...appState.state,
         inputValue: appState.state.inputValue,
         selectedValue: appState.state.selectedValue,
         clickCount: appState.state.clickCount
     }
 }
 
-const handleOnChangeValue = (value: string) => async (dispatch: Dispatch) => {
-    dispatch(TextInputActions.updateTextInputValue(value))
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        handleOnChangeValue: (value: string) => { dispatch(TextInputActions.updateTextInputValue(value)) },
+        handleOnSelectValue: (value: string) => { dispatch(TextInputActions.updateSelectedValue(value)) },
+        handleOnClick: () => { dispatch(TextInputActions.updateClickCount()) }
+    }
 }
-
-const handleOnSelectValue = (value: string) => async (dispatch: Dispatch) => {
-    dispatch(TextInputActions.updateSelectedValue(value))
-}
-const handleOnClick = () => async (dispatch: Dispatch) => {
-    dispatch(TextInputActions.updateClickCount())
-}
-
-export default connect(mapStateToProps, { handleOnChangeValue,handleOnSelectValue,handleOnClick })(TopPageForm)
+export default connect(mapStateToProps, mapDispatchToProps)(TopPageForm)
